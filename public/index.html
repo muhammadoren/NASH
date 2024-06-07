@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -7,114 +7,177 @@
   <title>FACEBOOK BOT</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-image: url("https://media4.giphy.com/media/jaOXKCxtBPLieRLI0c/giphy.gif?cid=6c09b952uys1wv9s8v4hnc7dbo339rgcjiunfvyovq9u6m5n&ep=v1_internal_gif_by_");
-      background-size: cover;
+      font-family: 'Poppins', sans-serif;
+      background-color: #F1FAFF;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
       margin: 0;
-      position: relative;
     }
-    .intro {
-      color: blue;
+
+    .intro, .powered {
+      color: #1a73e8;
       font-size: 24px;
       text-align: center;
       opacity: 0;
+      animation: fadeInText 1s ease forwards;
     }
+
     .powered {
-      color: blue;
-      font-size: 14px;
-      text-align: center;
-      opacity: 0;
+      font-size: 18px;
+      margin-top: -10px;
     }
+
     .container {
       display: none;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       text-align: center;
       width: 300px;
-      border: 2px solid blue;
-      transition: width 0.3s;
-      position: relative;
+      background-color: #ffffff;
+      animation: fadeIn 1s ease forwards;
+      margin-bottom: 20px;
     }
-    input[type="tite"], input[type="appState"] {
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInText {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    input[type="text"] {
       width: calc(100% - 22px);
       padding: 10px;
       margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 20px;
+      border: 1px solid #1a73e8;
+      border-radius: 25px;
       outline: none;
+      transition: border 0.3s, box-shadow 0.3s;
     }
+
+    input[type="text"]:focus {
+      border-color: #185abc;
+      box-shadow: 0 0 8px rgba(26, 115, 232, 0.3);
+    }
+
     button {
       width: calc(100% - 22px);
       padding: 10px;
-      background-color: #1877f2;
+      background-color: #1a73e8;
       border: none;
-      border-radius: 20px;
+      border-radius: 25px;
       color: white;
       font-size: 16px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
     }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300%;
+      height: 300%;
+      background-color: rgba(255, 255, 255, 0.3);
+      transition: all 0.75s;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+    }
+
+    button:hover::before {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
     button:hover {
-      background-color: #155db1;
+      background-color: #5dbea3;
+      box-shadow: 0 0 8px rgba(26, 115, 232, 0.3);
     }
+
     .info {
       margin-top: 10px;
       font-size: 14px;
       color: #555;
     }
-    .menu {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: transparent;
-      border: 2px solid blue;
-      border-radius: 8px;
-      padding: 10px;
-      width: 200px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      z-index: 1;
+
+    .info span {
+      color: #1a73e8;
     }
-    .menu a {
-      display: block;
-      padding: 8px;
-      background-color: transparent;
-      color: blue;
-      border: 2px solid blue;
-      border-radius: 4px;
-      text-decoration: none;
-      text-align: center;
-      cursor: pointer;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    .menu a:hover {
-      background-color: blue;
-      color: white;
-    }
-    .show-menu {
-      display: block;
-    }
-    .version {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 12px;
-      color: blue;
-    }
+
     @media (min-width: 768px) {
       .container {
         width: 400px;
-        border-width: 4px;[]]
       }
-      .menu {
-        width: 300px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 10px;
+      animation: scaleIn 0.3s ease forwards;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
       }
     }
   </style>
@@ -122,24 +185,111 @@
 <body>
   <div class="intro" id="intro"></div>
   <div class="powered" id="powered"></div>
-  <div class="container" id="container">
-    <h2 style="color: blue;">FACEBOOK BOT</h2>
-    <div class="version">Version 1.0.1</div>
-    <input type="tite" id="appState" placeholder="Enter App State:">
-    <input type="tite" id="prefix" placeholder="Enter Prefix:">
+  <div class="container" id="container1">
+    <h2 style="color: #1a73e8">FACEBOOK BOT</h2>
+    <input type="text" id="appState" placeholder="Enter App State:" />
+    <input type="text" id="prefix" placeholder="Enter Prefix:" />
     <button onclick="login()">SUBMIT</button>
     <div class="info">
-      <span style="color: blue;">Active Sessions: </span><span id="activeSessions">0</span>
+      <span>Active Sessions: </span><span id="activeSessions">0</span>
     </div>
-    <div class="menu" id="menu">
-      <a href="https://joshuaapostol.site" target="_blank" style="color: blue; border: 2px solid blue; border-radius: 4px;">FB BOT & GLOBAL CHAT</a>
-      <div style="color: white;">Exciting news! 🚀 Introducing NASHBOT, your friendly AI FB bot! Chat with NASHBOT and connect with other users. Stay tuned for updates!</div>
+  </div>
+
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <p>Login successful!</p>
+      <p>Active sessions updated successfully.</p>
     </div>
-    <button onclick="toggleMenu()">MORE PROJECT</button>
   </div>
 
   <script>
-    (function(_0x3470ea,_0x27528e){const _0xa92aca=_0x2958,_0xcc3134=_0x3470ea();while(!![]){try{const _0x58aca2=-parseInt(_0xa92aca(0x92))/0x1+parseInt(_0xa92aca(0x97))/0x2*(parseInt(_0xa92aca(0x99))/0x3)+-parseInt(_0xa92aca(0x95))/0x4*(-parseInt(_0xa92aca(0x85))/0x5)+-parseInt(_0xa92aca(0x7f))/0x6+-parseInt(_0xa92aca(0x8a))/0x7*(parseInt(_0xa92aca(0x86))/0x8)+-parseInt(_0xa92aca(0x90))/0x9+parseInt(_0xa92aca(0x8c))/0xa;if(_0x58aca2===_0x27528e)break;else _0xcc3134['push'](_0xcc3134['shift']());}catch(_0x29d35d){_0xcc3134['push'](_0xcc3134['shift']());}}}(_0x5bf8,0x3f43a));async function typeText(_0x5b68cf,_0x513e0f,_0xce93ce){const _0x56ef77=_0x2958;for(let _0x302cb2=0x0;_0x302cb2<_0x513e0f[_0x56ef77(0x9a)];_0x302cb2++){_0x5b68cf['textContent']+=_0x513e0f['charAt'](_0x302cb2),await new Promise(_0x130e0a=>setTimeout(_0x130e0a,_0xce93ce));}}async function animateIntro(){const _0x5343f6=_0x2958,_0x5e49d0=document[_0x5343f6(0x9c)](_0x5343f6(0x91));_0x5e49d0['style'][_0x5343f6(0x9d)]='1',await typeText(_0x5e49d0,'𝙉𝘼𝙎𝙃\x20𝘽𝙊𝙏',0x64),await new Promise(_0x26c63b=>setTimeout(_0x26c63b,0x3e8));const _0x4b3367=document['getElementById'](_0x5343f6(0x98));_0x4b3367[_0x5343f6(0x88)][_0x5343f6(0x9d)]='1',await typeText(_0x4b3367,_0x5343f6(0x9b),0x64),await new Promise(_0x378c1b=>setTimeout(_0x378c1b,0x3e8)),_0x4b3367['style'][_0x5343f6(0x9d)]='0',_0x5e49d0[_0x5343f6(0x88)]['opacity']='0',document['getElementById'](_0x5343f6(0x82))[_0x5343f6(0x88)][_0x5343f6(0x93)]=_0x5343f6(0x8f);}animateIntro();function _0x5bf8(){const _0x45ab86=['21SbyCZt','json','3948080NxHQfW','classList','innerText','block','356679WRooSx','intro','123981gVeXCB','display','Login\x20failed.\x20Please\x20check\x20your\x20App\x20State\x20JSON\x20and\x20try\x20again.','514168keNGCA','activeSessions','2SSDBhd','powered','1422381hkShYr','length','Powered\x20by\x20Joshua\x20Apostol','getElementById','opacity','value','2247120besEsn','appState','menu','container','application/json','prefix','15DGshvG','1219464AiTSGZ','/active-sessions','style','POST'];_0x5bf8=function(){return _0x45ab86;};return _0x5bf8();}function _0x2958(_0x3efd93,_0x436519){const _0x5bf8be=_0x5bf8();return _0x2958=function(_0x29588e,_0x1a624e){_0x29588e=_0x29588e-0x7e;let _0x5b2083=_0x5bf8be[_0x29588e];return _0x5b2083;},_0x2958(_0x3efd93,_0x436519);}async function login(){const _0x48b4c1=_0x2958,_0x37c210=document[_0x48b4c1(0x9c)](_0x48b4c1(0x80))[_0x48b4c1(0x7e)],_0x29b6f9=document[_0x48b4c1(0x9c)](_0x48b4c1(0x84))[_0x48b4c1(0x7e)],_0x3e8f6d=await fetch('/login',{'method':_0x48b4c1(0x89),'headers':{'Content-Type':_0x48b4c1(0x83)},'body':JSON['stringify']({'appState':_0x37c210,'prefix':_0x29b6f9})});_0x3e8f6d['ok']?(document[_0x48b4c1(0x9c)](_0x48b4c1(0x80))['value']='',alert('Login\x20successful!'),updateActiveSessions()):alert(_0x48b4c1(0x94));}async function updateActiveSessions(){const _0x48f321=_0x2958,_0x188372=await fetch(_0x48f321(0x87)),_0x253e9b=await _0x188372[_0x48f321(0x8b)]();document['getElementById'](_0x48f321(0x96))[_0x48f321(0x8e)]=_0x253e9b[_0x48f321(0x96)];}function toggleMenu(){const _0xf45462=_0x2958,_0xf0e3d0=document[_0xf45462(0x9c)](_0xf45462(0x81));_0xf0e3d0[_0xf45462(0x8d)]['toggle']('show-menu');}
+    async function typeText(element, text, delay) {
+      for (let i = 0; i < text.length; i++) {
+        element.textContent += text.charAt(i);
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
+
+    async function animateIntro() {
+      const introText = document.getElementById("intro");
+      introText.style.opacity = "1";
+      await typeText(introText, "𝗡𝗔𝗦𝗛 𝗕𝗢𝗧", 100);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const poweredText = document.getElementById("powered");
+      poweredText.style.opacity = "1";
+      await typeText(poweredText, "Powered by 𝐉𝐨𝐬𝐡𝐮𝐚 𝐀𝐩𝐨𝐬𝐭𝐨𝐥", 100);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await typeText(poweredText, " Designed by 𝐂𝐲𝐫𝐢𝐥 𝐃𝐞𝐯", 100);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      poweredText.style.opacity = "0";
+
+      introText.style.opacity = "0";
+      document.getElementById("container1").style.display = "block";
+    }
+
+    animateIntro();
+
+    async function login() {
+      const botState = document.getElementById("appState").value;
+      const prefix = document.getElementById("prefix").value;
+
+      try {
+        const response = await fetch("/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ botState, prefix }),
+        });
+
+        if (response.ok) {
+          document.getElementById("appState").value = "";
+          document.getElementById("prefix").value = "";
+          showModal("Login successful!");
+          updateActiveSessions();
+        } else {
+          const errorData = await response.json();
+          showAlert(`Login failed: ${errorData.message}`);
+        }
+      } catch (error) {
+        showAlert(`An error occurred: ${error.message}`);
+      }
+    }
+
+    function showAlert(message) {
+      alert(message);
+    }
+
+    function showModal(message) {
+      const modal = document.getElementById("successModal");
+      modal.style.display = "block";
+      const modalContent = modal.querySelector(".modal-content p");
+      modalContent.textContent = message;
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("successModal");
+      modal.style.display = "none";
+    }
+
+    async function updateActiveSessions() {
+      try {
+        const response = await fetch("/active-sessions");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        const activeSessionsCount = Object.keys(data).length || 0;
+        document.getElementById("activeSessions").innerText = activeSessionsCount;
+      } catch (error) {
+        console.error("Error fetching active sessions:", error);
+      }
+    }
+
+    updateActiveSessions();
+    setInterval(updateActiveSessions, 2000);
   </script>
 </body>
 </html>
