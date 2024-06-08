@@ -1,30 +1,15 @@
-module.exports = new Object({
-  name: "leaveNoti",
-  description: "cool leaveNoti",
-  author: "Rui",
+module.exports = {
+  name: 'leaveNoti',
+  description: 'Notifies the user when they leave or get kicked from a group.',
   onEvent: async ({ api, event }) => {
-    if (
-      event.logMessageType === "log: unsubscribe" &&
-      event.logMessageData.leftParticipantFbId
-    ) {
-      const uid = event.logMessageData.leftParticipantFbId;
-      const { uid: userInfo } = await api.getUserInfo(uid);
-      const threadInfo = await api.getThreadInfo(event.threadID);
-
-      if (
-        event.logMessageData.leftParticipantFbId ===
-        event.logMessageData.kickedParticipantFbId
-      ) {
-        api.sendMessage(
-          `User: ${userInfo.name} got kicked by admins from group: ${threadInfo.name}`,
-          event.threadID,
-          event.messageID,
-        );
-      } else {
-        api.sendMessage(
-          `User: ${userInfo.name} left group: ${threadInfo.name}`,
-        );
+    if (event.type === 'event' && event.logMessageType === 'log:unsubscribe' && event.leftParticipantFbId === api.getCurrentUserID()) {
+      try {
+        const userInfo = await api.getUserInfo(event.threadID);
+        const userName = userInfo[event.threadID].name;
+        api.sendMessage(`∘₊✧──────✧₊∘ Goodbye ${userName}! We'll miss you. ∘₊✧──────✧₊∘`, event.threadID);
+      } catch (error) {
+        console.error('Error retrieving user info:', error);
       }
     }
   },
-});
+};
