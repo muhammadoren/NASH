@@ -1,19 +1,14 @@
 module.exports = {
-  name: 'help',
-  description: 'Displays information about available commands',
-  nashPrefix: false,
-  execute(api, event, args, prefix, commands) {
-    const helpMessage = generateHelpMessage(commands);
-    api.sendMessage(helpMessage, event.threadID);
+  name: "help",
+  description: "Lists all available commands.",
+  execute(api, event, args, prefix) {
+    let message = "Available Commands:\n\n";
+    global.NashBoT.commands.forEach((cmd, name) => {
+      message += `•─────⋅☾ ${prefix}${name} ☽⋅─────•\nDescription: ${cmd.description}\n\n`;
+    });
+    message += "•─────⋅☾ Credits ☽⋅─────•\n";
+    message += "Bot created by joshua Apostol.\n";
+    message += "Powered by NashBoT.\n";
+    api.sendMessage(message, event.threadID);
   },
 };
-
-function generateHelpMessage(commands) {
-    let helpMessage = 'Here are the available commands:\n\n';
-
-    commands.forEach((command, name) => {
-        helpMessage += `Command: ${name}\nDescription: ${command.description}\n\n`;
-    });
-
-    return helpMessage;
-}
