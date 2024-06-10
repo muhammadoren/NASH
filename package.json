@@ -192,6 +192,7 @@
     "setprototypeof": "^1.2.0",
     "side-channel": "^1.0.6",
     "split2": "^3.2.2",
+    "sqlite3": "^5.1.7",
     "sshpk": "^1.18.0",
     "statuses": "^2.0.1",
     "stream-shift": "^1.0.3",
