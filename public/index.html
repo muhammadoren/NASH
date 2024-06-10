@@ -180,26 +180,6 @@
         opacity: 1;
       }
     }
-
-    #videoContainer {
-      display: none;
-      margin-top: 20px;
-      width: 80%;
-      max-width: 400px;
-    }
-
-    video {
-      width: 100%;
-      height: 225px;
-      border: none;
-    }
-
-    #toggleVideoButton {
-      display: none;
-      margin-top: 10px;
-      width: 200px;
-      height: 40px;
-    }
   </style>
 </head>
 <body>
@@ -222,14 +202,6 @@
       <p>Active sessions updated successfully.</p>
     </div>
   </div>
-
-  <div id="videoContainer">
-    <video id="tutorialVideo" controls>
-      <source src="video/tuts.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
-  <button id="toggleVideoButton" onclick="toggleVideo()">TUTORIAL</button>
 
   <script>
     async function typeText(element, text, delay) {
@@ -255,7 +227,6 @@
 
       introText.style.opacity = "0";
       document.getElementById("container1").style.display = "block";
-      document.getElementById("toggleVideoButton").style.display = "inline-block"; // Show the toggle button
     }
 
     animateIntro();
@@ -294,6 +265,8 @@
     function showModal(message) {
       const modal = document.getElementById("successModal");
       modal.style.display = "block";
+      const modalContent = modal.querySelector(".modal-content p");
+      modalContent.textContent = message;
     }
 
     function closeModal() {
@@ -304,21 +277,19 @@
     async function updateActiveSessions() {
       try {
         const response = await fetch("/active-sessions");
-        if (response.ok) {
-          const data = await response.json();
-          document.getElementById("activeSessions").textContent = data.activeSessions;
-        } else {
-          showAlert("Failed to update active sessions.");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        const data = await response.json();
+        const activeSessionsCount = Object.keys(data).length || 0;
+        document.getElementById("activeSessions").innerText = activeSessionsCount;
       } catch (error) {
-        showAlert(`An error occurred: ${error.message}`);
+        console.error("Error fetching active sessions:", error);
       }
     }
 
-    function toggleVideo() {
-      const videoContainer = document.getElementById("videoContainer");
-      videoContainer.style.display = videoContainer.style.display === "none" ? "block" : "none";
-    }
+    updateActiveSessions();
+    setInterval(updateActiveSessions, 2000);
   </script>
 </body>
 </html>
