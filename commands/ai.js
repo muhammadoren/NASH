@@ -2,8 +2,7 @@ const axios = require('axios');
 
 module.exports = {
     name: 'ai',
-    description: 'An AI command powered by Neuronspike, modified by Joshua Apostol',
-    aliases: ['globalGPT'],
+    description: 'An AI command powered by joshua',
     cooldown: 3,
     nashPrefix: false,
     execute: async (api, event, args) => {
@@ -21,13 +20,26 @@ module.exports = {
         api.sendMessage(`Processing your request...`, event.threadID, event.messageID);
 
         try {
-            const { data } = await axios.get(`https://api.easy-api.online/v1/globalgpt?q=${encodeURIComponent(input)}`);
-            const response = data.content;
+            const { data } = await axios.get(`https://nas-api-end.onrender.com/gpt4?query=${encodeURIComponent(input)}`);
+            
+            if (!data || !data.respond) {
+                throw new Error('Ayaw mag response ang gago');
+            }
+            
+            const response = data.respond;
 
             const finalResponse = `✩𝐉𝐎𝐒𝐇𝐁𝐎𝐓✩\n\n${response}`;
             api.sendMessage(finalResponse, event.threadID, event.messageID);
         } catch (error) {
-            api.sendMessage('An error occurred while processing your request, please try sending your question again.', event.threadID, event.messageID);
+            let errorMessage = 'An error occurred while processing your request, please try sending your question again.';
+            
+            if (error.response && error.response.data) {
+                errorMessage = `API returned an error: ${error.response.data.message}`;
+            } else if (error.message) {
+                errorMessage = `Error: ${error.message}`;
+            }
+            
+            api.sendMessage(errorMessage, event.threadID, event.messageID);
             console.error(error);
         }
     },
