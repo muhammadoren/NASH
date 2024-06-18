@@ -2,7 +2,7 @@ const axios = require("axios");
 
 module.exports = {
     name: "adobo",
-    description: "Get information from Adobo GPT API",
+    description: "adobong baboy gpt",
     aliases: [],
     cooldown: 5,
     nashPrefix: false,
