@@ -16,7 +16,7 @@ module.exports = {
             const { text, author } = response.data;
 
             if (!text || !author) {
-                return api.sendMessage("No quote received from API.", threadID, messageID);
+                return api.sendMessage("walang response ang gago GAHAHA", threadID, messageID);
             }
 
             const quoteMessage = `“${text}”\n- ${author}`;

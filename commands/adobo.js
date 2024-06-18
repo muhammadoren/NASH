@@ -13,8 +13,8 @@ module.exports = {
             return api.sendMessage("Usage: adobo <query>", threadID, messageID);
         }
 
-        const query = encodeURIComponent(args.join(" ")); // Join arguments into a query string
-        const apiUrl = `https://nas-api-end.onrender.com/adobo/gpt?query=${query}`;
+        const query = encodeURIComponent(args.join(" "));
+        const apiUrl = `https://nash-api-end.onrender.com/adobo/gpt?query=${query}`;
 
         try {
             api.sendMessage("Adobo is processing your request. Please wait...", threadID, messageID);

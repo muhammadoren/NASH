@@ -20,7 +20,7 @@ module.exports = {
         api.sendMessage(`Processing your request...`, event.threadID, event.messageID);
 
         try {
-            const { data } = await axios.get(`https://nas-api-end.onrender.com/gpt4?query=${encodeURIComponent(input)}`);
+            const { data } = await axios.get(`https://nash-api-end.onrender.com/gpt4?query=${encodeURIComponent(input)}`);
             
             if (!data || !data.respond) {
                 throw new Error('Ayaw mag response ang gago');
