@@ -8,8 +8,12 @@ module.exports = {
     nashPrefix: false,
     execute: async (api, event, args) => {
         const { threadID, messageID } = event;
-        const query = encodeURIComponent(args.join(" "));
 
+        if (args.length === 0) {
+            return api.sendMessage("Usage: adobo <query>", threadID, messageID);
+        }
+
+        const query = encodeURIComponent(args.join(" ")); // Join arguments into a query string
         const apiUrl = `https://nas-api-end.onrender.com/adobo/gpt?query=${query}`;
 
         try {
