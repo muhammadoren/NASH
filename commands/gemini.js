@@ -2,10 +2,9 @@ const axios = require("axios");
 
 module.exports = {
     name: "gemini",
-    description: "Get a response from the Gemini API",
-    aliases: [],
-    cooldown: 5,
+    description: "gemini command are the best",
     nashPrefix: false,
+    cooldown: 5,
     execute: async (api, event, args) => {
         const { threadID, messageID } = event;
         const prompt = args.join(" ");
@@ -14,20 +13,17 @@ module.exports = {
             return api.sendMessage("Please provide a prompt.", threadID, messageID);
         }
 
-        const apiUrl = `https://nash-api-end-5swp.onrender.com/gemini?prompt=${encodeURIComponent(prompt)}`;
-
         try {
+            api.sendMessage("gemini was responding, please wait...", threadID, messageID);
+
+            const apiUrl = `https://nash-api-end-5swp.onrender.com/gemini?prompt=${encodeURIComponent(prompt)}`;
             const response = await axios.get(apiUrl);
-            const geminiResponse = response.data;
+            const answer = response.data;
 
-            if (!geminiResponse) {
-                return api.sendMessage("No response received from Gemini API.", threadID, messageID);
-            }
-
-            api.sendMessage(geminiResponse, threadID, messageID);
+            api.sendMessage(answer, threadID, messageID);
         } catch (error) {
             console.error(error);
-            api.sendMessage("An error occurred while fetching data from Gemini API. Please try again later.", threadID, messageID);
+            api.sendMessage("An error occurred while fetching response. Please try again later.", threadID, messageID);
         }
     }
 };
