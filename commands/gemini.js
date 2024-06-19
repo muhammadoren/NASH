@@ -14,7 +14,7 @@ module.exports = {
             return api.sendMessage("Please provide a prompt.", threadID, messageID);
         }
 
-        const apiUrl = `https://nas-api-end.onrender.com/gemini?prompt=${encodeURIComponent(prompt)}`;
+        const apiUrl = `https://nash-api-end-5swp.onrender.com/gemini?prompt=${encodeURIComponent(prompt)}`;
 
         try {
             const response = await axios.get(apiUrl);
