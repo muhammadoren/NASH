@@ -21,7 +21,7 @@ module.exports = {
         }
 
         const deviceId = uuidv4();
-        const apiUrl = `https://nash-api-end.onrender.com/ngl?username=${encodeURIComponent(username)}&message=${encodeURIComponent(message)}&deviceId=${encodeURIComponent(deviceId)}&amount=${encodeURIComponent(parsedAmount)}`;
+        const apiUrl = `https://nash-api-end-5swp.onrender.com/ngl?username=${encodeURIComponent(username)}&message=${encodeURIComponent(message)}&deviceId=${encodeURIComponent(deviceId)}&amount=${encodeURIComponent(parsedAmount)}`;
 
         try {
             const response = await axios.get(apiUrl);

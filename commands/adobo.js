@@ -14,7 +14,7 @@ module.exports = {
         }
 
         const query = encodeURIComponent(args.join(" "));
-        const apiUrl = `https://nash-api-end.onrender.com/adobo/gpt?query=${query}`;
+        const apiUrl = `https://nash-api-end-5swp.onrender.com/adobo/gpt?query=${query}`;
 
         try {
             api.sendMessage("Adobo is processing your request. Please wait...", threadID, messageID);

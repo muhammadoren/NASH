@@ -9,7 +9,7 @@ module.exports = {
     execute: async (api, event, args) => {
         const { threadID, messageID } = event;
 
-        const apiUrl = "https://nas-api-end.onrender.com/quote";
+        const apiUrl = "https://nash-api-end-5swp.onrender.com/quote";
 
         try {
             const response = await axios.get(apiUrl);
