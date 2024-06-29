@@ -1,41 +1,55 @@
-const axios = require("axios");
-const { v4: uuidv4 } = require('uuid');
+const axios = require('axios');
 
 module.exports = {
-    name: "ngl",
-    description: "total wala naman tong mga credits command ko nakawin muna nahiya kapa",
-    aliases: [],
-    cooldown: 5,
-    nashPrefix: true,
-    execute: async (api, event, args) => {
-        const { threadID, messageID } = event;
-        const [username, message, amount] = args;
+  name: 'ngl',
+  description: 'Send message to API with random device ID',
+  usage: '<username> <message> <amount>',
+  nashPrefix: false,
+  execute(api, event, args, prefix) {
+    try {
+      if (args.length < 3 || isNaN(args[args.length - 1])) {
+        api.sendMessage(`Usage: [ 📬 '${prefix}ngl <username> <message> <amount>' 📬 ]\n\nExample: [ 📬 '${prefix}ngl John Hello World 15' 📬 ]`, event.threadID);
+        return;
+      }
 
-        if (!username || !message) {
-            return api.sendMessage("Please provide username and message.", threadID, messageID);
-        }
+      let amount = parseInt(args[args.length - 1], 10);
+      const username = args[0];
+      const message = args.slice(1, -1).join(' ');
 
-        let parsedAmount = parseInt(amount);
-        if (isNaN(parsedAmount) || parsedAmount < 1 || parsedAmount > 24) {
-            return api.sendMessage("Amount should be a number between 1 and 24.", threadID, messageID);
-        }
+      
+      if (amount > 15) {
+        api.sendMessage('The maximum amount allowed is 15.', event.threadID);
+        return;
+      }
 
-        const deviceId = uuidv4();
-        const apiUrl = `https://nash-api-end-5swp.onrender.com/ngl?username=${encodeURIComponent(username)}&message=${encodeURIComponent(message)}&deviceId=${encodeURIComponent(deviceId)}&amount=${encodeURIComponent(parsedAmount)}`;
+      const randomDeviceId = Math.floor(Math.random() * 100000);
+      
+      const apiUrl = 'https://nash-rest-api.replit.app/ngl';
 
-        try {
-            const response = await axios.get(apiUrl);
+      const requestData = {
+        username,
+        message,
+        deviceId: randomDeviceId,
+        amount
+      };
 
-            if (!response.data) {
-                return api.sendMessage("gago walang response.", threadID, messageID);
-            }
+      api.sendMessage('📬 Sending message...', event.threadID);
 
-            setTimeout(() => {
-                api.sendMessage("Message sent successfully.", threadID, messageID);
-            }, 2000); // 2-second delay
-        } catch (error) {
-            console.error(error);
-            api.sendMessage("An error occurred while sending message. Please try again later.", threadID, messageID);
-        }
+      axios.get(apiUrl, { params: requestData })
+        .then(response => {
+          if (response.data && response.data.message && response.data.developedBy) {
+            api.sendMessage(`📬 ${response.data.message} - Developed by: ${response.data.developedBy}`, event.threadID);
+          } else {
+            throw new Error('Invalid response format from API');
+          }
+        })
+        .catch(error => {
+          console.error('Error sending message:', error.message || error);
+          api.sendMessage('An error occurred while sending the message.', event.threadID);
+        });
+    } catch (error) {
+      console.error('Error executing command:', error.message || error);
+      api.sendMessage('An error occurred while executing the command.', event.threadID);
     }
+  },
 };

@@ -1,8 +1,8 @@
 const axios = require('axios');
 
 module.exports = {
-    name: 'ai',
-    description: 'An AI command powered by joshua',
+    name: 'aiv2',
+    description: 'ahhh basta ai ok nayun',
     cooldown: 3,
     nashPrefix: false,
     execute: async (api, event, args) => {
@@ -20,7 +20,7 @@ module.exports = {
         api.sendMessage(`Processing your request...`, event.threadID, event.messageID);
 
         try {
-            const { data } = await axios.get(`https://nash-api-end-5swp.onrender.com/gpt4?query=${encodeURIComponent(input)}`);
+            const { data } = await axios.get(`https://selected-tamiko-joshua132-23ef32c6.koyeb.app/gpt4?query=${encodeURIComponent(input)}`);
             
             if (!data || !data.respond) {
                 throw new Error('Ayaw mag response ang gago');
@@ -28,7 +28,10 @@ module.exports = {
             
             const response = data.respond;
 
-            const finalResponse = `✩𝐉𝐎𝐒𝐇𝐁𝐎𝐓✩\n\n${response}`;
+            const options = { timeZone: 'Asia/Manila', hour12: true };
+            const timeString = new Date().toLocaleString('en-US', options);
+
+            const finalResponse = `𝙍𝙀𝙎𝙋𝙊𝙉𝘿 𝘼𝙄 🤖\n━━━━━━━━━━━━━━━━━━━\n𝗤𝘂𝗲𝘀𝘁𝗶𝗼𝗻: ${input}\n━━━━━━━━━━━━━━━━━━━\n𝗔𝗻𝘀𝘄𝗲𝗿: ${response}\n\n𝗣⃪𝗼⃪𝗴⃪𝗶⃪: ${timeString}\n\nFOLLOW THE DEVELOPER: https://www.facebook.com/profile.php?id=100088690249020\n\nMAKE YOUR OWN BOT HERE: https://nash-joshua0948.replit.app`;
             api.sendMessage(finalResponse, event.threadID, event.messageID);
         } catch (error) {
             let errorMessage = 'An error occurred while processing your request, please try sending your question again.';

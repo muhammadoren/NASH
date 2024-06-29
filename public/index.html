@@ -1,295 +1,349 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FACEBOOK BOT</title>
+  <title>NASH BOT</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
   <style>
     body {
+      padding: 20px;
+      background-color: #0e0e0e;
       font-family: 'Poppins', sans-serif;
-      background-color: #F1FAFF;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .intro, .powered {
-      color: #1a73e8;
-      font-size: 24px;
-      text-align: center;
-      opacity: 0;
-      animation: fadeInText 1s ease forwards;
-    }
-
-    .powered {
-      font-size: 18px;
-      margin-top: -10px;
+      color: #fff;
     }
 
     .container {
-      display: none;
-      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: rgba(26, 26, 26, 0.8);
       border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      text-align: center;
-      width: 300px;
-      background-color: #ffffff;
-      animation: fadeIn 1s ease forwards;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 6px 6px rgba(0, 0, 0, 0.23);
+      padding: 40px;
+      margin-top: 20px;
       margin-bottom: 20px;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    h1, h2 {
+      color: #fff;
+      text-align: center;
     }
 
-    @keyframes fadeInText {
-      from {
-        opacity: 0;
-        transform: scale(0.9);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+    label {
+      color: #ccc;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: block;
     }
 
-    input[type="text"] {
-      width: calc(100% - 22px);
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #1a73e8;
-      border-radius: 25px;
-      outline: none;
-      transition: border 0.3s, box-shadow 0.3s;
-    }
-
-    input[type="text"]:focus {
-      border-color: #185abc;
-      box-shadow: 0 0 8px rgba(26, 115, 232, 0.3);
-    }
-
-    button {
-      width: calc(100% - 22px);
-      padding: 10px;
-      background-color: #1a73e8;
-      border: none;
-      border-radius: 25px;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s, box-shadow 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    button::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 300%;
-      height: 300%;
-      background-color: rgba(255, 255, 255, 0.3);
-      transition: all 0.75s;
-      border-radius: 50%;
-      transform: translate(-50%, -50%) scale(0);
-    }
-
-    button:hover::before {
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    button:hover {
-      background-color: #5dbea3;
-      box-shadow: 0 0 8px rgba(26, 115, 232, 0.3);
-    }
-
-    .info {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #555;
-    }
-
-    .info span {
-      color: #1a73e8;
-    }
-
-    @media (min-width: 768px) {
-      .container {
-        width: 400px;
-      }
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
+    .centered-textarea {
       width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.4);
-      padding-top: 60px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      margin-bottom: 20px;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+      height: 200px;
+      font-size: 1rem;
     }
 
-    .modal-content {
-      background-color: #fefefe;
-      margin: 5% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-      max-width: 500px;
-      border-radius: 10px;
-      animation: scaleIn 0.3s ease forwards;
+    .centered-textarea:focus {
+      border-color: violet;
     }
 
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
+    .centered-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      margin-bottom: 20px;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .centered-input:focus {
+      border-color: violet;
+    }
+
+    .btn-primary {
+      background-color: #808080;
+      border: none;
+      color: #FF0000;
+      padding: 12px 24px;
+      font-size: 1rem;
       cursor: pointer;
-      transition: color 0.3s;
+      display: block;
+      width: 100%;
+      text-align: center;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
     }
 
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
+    .btn-primary:hover {
+      background-color: #808080;
     }
 
-    @keyframes scaleIn {
-      from {
-        transform: scale(0.8);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
+    .footer {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      text-align: center;
+      font-size: 16px;
+      color: red;
+      margin-top: 50px;
+      border-top: 1px solid red;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    .footer p {
+      margin: 0;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .command-item {
+      background-color: rgba(0, 0, 0, 0.6);
+      border: 1px solid #444;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .command-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .command-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #00f;
+    }
+
+    .command-description {
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .pagination button {
+      background-color: #000000;
+      border: none;
+      color: #FF0000;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .pagination button:hover {
+      background-color: #808080;
+    }
+
+    .pagination button:disabled {
+      background-color: #808080;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="intro" id="intro"></div>
-  <div class="powered" id="powered"></div>
-  <div class="container" id="container1">
-    <h2 style="color: #1a73e8">FACEBOOK BOT</h2>
-    <input type="text" id="appState" placeholder="Enter App State:" />
-    <input type="text" id="prefix" placeholder="Enter Prefix:" />
-    <button onclick="login()">SUBMIT</button>
-    <div class="info">
-      <span>Active Sessions: </span><span id="activeSessions">0</span>
+  <main class="container">
+    <h1>Welcome to the NASHBOT</h1>
+    <div class="form-container">
+      <form id="loginForm" class="login-form">
+        <label for="botState">Bot State:</label>
+        <textarea id="botState" class="centered-textarea" rows="10" placeholder="Paste your facebook appstate here..." required></textarea>
+        
+        <label for="prefix">Prefix: example: /</label>
+        <input type="text" id="prefix" class="centered-input" placeholder="Enter command prefix..." required>
+        
+        <button type="submit" class="btn-primary">Login</button>
+      </form>
     </div>
-  </div>
 
-  <div id="successModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <p>Login successful!</p>
-      <p>Active sessions updated successfully.</p>
+    <div id="commandList" class="command-list">
+      <h2>Commands</h2>
+      <ul id="commands">
+      </ul>
+      <div class="pagination">
+        <button id="prevPage" disabled>Previous</button>
+        <button id="nextPage">Next</button>
+      </div>
     </div>
-  </div>
+
+    <div id="activeSessions">
+      <h2>Active Sessions</h2>
+      <p id="activeSessionsCount">Loading active sessions...</p>
+      <ul id="sessionList">
+      </ul>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2024 joshua Apostol. All rights reserved.</p>
+  </footer>
 
   <script>
-    async function typeText(element, text, delay) {
-      for (let i = 0; i < text.length; i++) {
-        element.textContent += text.charAt(i);
-        await new Promise((resolve) => setTimeout(resolve, delay));
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('loginForm');
+      const botStateInput = document.getElementById('botState');
+      const prefixInput = document.getElementById('prefix');
+      const commandList = document.getElementById('commands');
+      const sessionList = document.getElementById('sessionList');
+      const activeSessionsCountElement = document.getElementById('activeSessionsCount');
+
+      const prevPageButton = document.getElementById('prevPage');
+      const nextPageButton = document.getElementById('nextPage');
+
+      let currentPage = 1;
+      const commandsPerPage = 5;
+      let commandsData = [];
+
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const botState = botStateInput.value.trim();
+        const prefix = prefixInput.value.trim();
+
+        if (!botState || !prefix) {
+          alert('Bot state and prefix are required.');
+          return;
+        }
+
+        try {
+          const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ botState, prefix }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to login');
+          }
+          
+          botStateInput.value = '';
+          prefixInput.value = '';
+
+          alert('Logged in successfully!');
+          
+          fetchCommands();
+          fetchActiveSessions();
+        } catch (error) {
+          console.error('Error logging in:', error);
+          alert('Failed to login. Please try again.');
+        }
+      });
+
+      async function fetchCommands() {
+        try {
+          const response = await fetch('/commands');
+          if (!response.ok) {
+            throw new Error('Failed to fetch commands');
+          }
+          const commands = await response.json();
+          commandsData = Object.keys(commands).map((name) => ({
+            name,
+            description: commands[name].description,
+          }));
+          displayCommands();
+        } catch (error) {
+          console.error('Error fetching commands:', error);
+          alert('Failed to fetch commands. Please try again.');
+        }
       }
-    }
 
-    async function animateIntro() {
-      const introText = document.getElementById("intro");
-      introText.style.opacity = "1";
-      await typeText(introText, "𝗡𝗔𝗦𝗛 𝗕𝗢𝗧", 100);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      function displayCommands() {
+        commandList.innerHTML = '';
 
-      const poweredText = document.getElementById("powered");
-      poweredText.style.opacity = "1";
-      await typeText(poweredText, "Powered by 𝐉𝐨𝐬𝐡𝐮𝐚 𝐀𝐩𝐨𝐬𝐭𝐨𝐥", 100);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      await typeText(poweredText, " Designed by 𝐂𝐲𝐫𝐢𝐥 𝐃𝐞𝐯", 100);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      poweredText.style.opacity = "0";
+        const startIndex = (currentPage - 1) * commandsPerPage;
+        const endIndex = startIndex + commandsPerPage;
+        const currentCommands = commandsData.slice(startIndex, endIndex);
 
-      introText.style.opacity = "0";
-      document.getElementById("container1").style.display = "block";
-    }
-
-    animateIntro();
-
-    async function login() {
-      const botState = document.getElementById("appState").value;
-      const prefix = document.getElementById("prefix").value;
-
-      try {
-        const response = await fetch("/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ botState, prefix }),
+        currentCommands.forEach((command) => {
+          const li = document.createElement('li');
+          li.className = 'command-item';
+          li.innerHTML = `
+            <div class="command-name">${command.name}</div>
+            <div class="command-description">${command.description}</div>
+          `;
+          commandList.appendChild(li);
         });
 
-        if (response.ok) {
-          document.getElementById("appState").value = "";
-          document.getElementById("prefix").value = "";
-          showModal("Login successful!");
-          updateActiveSessions();
-        } else {
-          const errorData = await response.json();
-          showAlert(`Login failed: ${errorData.message}`);
-        }
-      } catch (error) {
-        showAlert(`An error occurred: ${error.message}`);
+        prevPageButton.disabled = currentPage === 1;
+        nextPageButton.disabled = endIndex >= commandsData.length;
       }
-    }
 
-    function showAlert(message) {
-      alert(message);
-    }
+      prevPageButton.addEventListener('click', () => {
+        currentPage--;
+        displayCommands();
+      });
 
-    function showModal(message) {
-      const modal = document.getElementById("successModal");
-      modal.style.display = "block";
-      const modalContent = modal.querySelector(".modal-content p");
-      modalContent.textContent = message;
-    }
+      nextPageButton.addEventListener('click', () => {
+        currentPage++;
+        displayCommands();
+      });
 
-    function closeModal() {
-      const modal = document.getElementById("successModal");
-      modal.style.display = "none";
-    }
-
-    async function updateActiveSessions() {
-      try {
-        const response = await fetch("/active-sessions");
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+      async function fetchActiveSessions() {
+        try {
+          const response = await fetch('/active-sessions');
+          if (!response.ok) {
+            throw new Error('Failed to fetch active sessions');
+          }
+          const sessions = await response.json();
+          displayActiveSessions(sessions);
+        } catch (error) {
+          console.error('Error fetching active sessions:', error);
+          alert('Failed to fetch active sessions. Please try again.');
         }
-        const data = await response.json();
-        const activeSessionsCount = Object.keys(data).length || 0;
-        document.getElementById("activeSessions").innerText = activeSessionsCount;
-      } catch (error) {
-        console.error("Error fetching active sessions:", error);
       }
-    }
 
-    updateActiveSessions();
-    setInterval(updateActiveSessions, 2000);
+      function displayActiveSessions(sessions) {
+        sessionList.innerHTML = '';
+
+        const activeSessionCount = Object.keys(sessions).length;
+        activeSessionsCountElement.textContent = `Active Sessions: ${activeSessionCount}`;
+
+        Object.keys(sessions).forEach((uid) => {
+          const session = sessions[uid];
+          const li = document.createElement('li');
+          li.textContent = `UserID: ${session.userID}, Prefix: ${session.prefix}`;
+          sessionList.appendChild(li);
+        });
+      }
+
+      fetchCommands();
+      fetchActiveSessions();
+    });
   </script>
 </body>
 </html>

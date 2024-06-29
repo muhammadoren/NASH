@@ -183,6 +183,16 @@ app.get("/active-sessions", async (req, res) => {
   res.json(json);
 });
 
+app.get("/commands", (req, res) => {
+  const commands = {};
+  global.NashBoT.commands.forEach((command, name) => {
+    commands[name] = {
+      description: command.description || "No description available"
+    };
+  });
+  res.json(commands);
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
