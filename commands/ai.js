@@ -31,7 +31,7 @@ module.exports = {
             const options = { timeZone: 'Asia/Manila', hour12: true };
             const timeString = new Date().toLocaleString('en-US', options);
 
-            const finalResponse = `𝙍𝙀𝙎𝙋𝙊𝙉𝘿 𝘼𝙄 🤖\n━━━━━━━━━━━━━━━━━━━\n𝗤𝘂𝗲𝘀𝘁𝗶𝗼𝗻: ${input}\n━━━━━━━━━━━━━━━━━━━\n𝗔𝗻𝘀𝘄𝗲𝗿: ${response}\n\n𝗣⃪𝗼⃪𝗴⃪𝗶⃪: ${timeString}\n\nFOLLOW THE DEVELOPER: https://www.facebook.com/profile.php?id=100088690249020\n\nMAKE YOUR OWN BOT HERE: https://nash-joshua0948.replit.app`;
+            const finalResponse = `𝙍𝙀𝙎𝙋𝙊𝙉𝘿 𝘼𝙄 🤖\n━━━━━━━━━━━━━━━━━━━\n𝗤𝘂𝗲𝘀𝘁𝗶𝗼𝗻: ${input}\n━━━━━━━━━━━━━━━━━━━\n𝗔𝗻𝘀𝘄𝗲𝗿: ${response}\n\n𝗣⃪𝗼⃪𝗴⃪𝗶⃪: ${timeString}\n\nFOLLOW THE DEVELOPER: https://www.facebook.com/profile.php?id=100088690249020\n\nMAKE YOUR OWN BOT HERE: https://NASH-BOT.replit.app`;
             api.sendMessage(finalResponse, event.threadID, event.messageID);
         } catch (error) {
             let errorMessage = 'An error occurred while processing your request, please try sending your question again.';

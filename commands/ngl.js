@@ -8,7 +8,7 @@ module.exports = {
   execute(api, event, args, prefix) {
     try {
       if (args.length < 3 || isNaN(args[args.length - 1])) {
-        api.sendMessage(`Usage: [ 📬 '${prefix}ngl <username> <message> <amount>' 📬 ]\n\nExample: [ 📬 '${prefix}ngl John Hello World 15' 📬 ]`, event.threadID);
+        api.sendMessage(`📬 𝗨𝘀𝗮𝗴𝗲: '${prefix}ngl <username> <message> <amount>' 📬\n\nExample: [ 📬 '${prefix}ngl joshua hi 15' 📬 ]`, event.threadID);
         return;
       }
 
@@ -16,14 +16,13 @@ module.exports = {
       const username = args[0];
       const message = args.slice(1, -1).join(' ');
 
-      
       if (amount > 15) {
-        api.sendMessage('The maximum amount allowed is 15.', event.threadID);
+        api.sendMessage('⚠️ The maximum amount allowed is 15.', event.threadID);
         return;
       }
 
       const randomDeviceId = Math.floor(Math.random() * 100000);
-      
+
       const apiUrl = 'https://nash-rest-api.replit.app/ngl';
 
       const requestData = {
@@ -38,18 +37,25 @@ module.exports = {
       axios.get(apiUrl, { params: requestData })
         .then(response => {
           if (response.data && response.data.message && response.data.developedBy) {
-            api.sendMessage(`📬 ${response.data.message} - Developed by: ${response.data.developedBy}`, event.threadID);
+            api.sendMessage(`
+📬 𝗠𝗲𝘀𝘀𝗮𝗴𝗲 𝗦𝗲𝗻𝘁 📬
+
+➥ Message: ${response.data.message}
+➥ Developed by: ${response.data.developedBy}
+
+━━━━━━━━━━━━━━━━━━━
+            `, event.threadID);
           } else {
             throw new Error('Invalid response format from API');
           }
         })
         .catch(error => {
           console.error('Error sending message:', error.message || error);
-          api.sendMessage('An error occurred while sending the message.', event.threadID);
+          api.sendMessage('⚠️ An error occurred while sending the message.', event.threadID);
         });
     } catch (error) {
       console.error('Error executing command:', error.message || error);
-      api.sendMessage('An error occurred while executing the command.', event.threadID);
+      api.sendMessage('⚠️ An error occurred while executing the command.', event.threadID);
     }
   },
 };

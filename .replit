@@ -15,6 +15,7 @@ language = "nodejs"
 run = ["sh", "-c", "node index.js"]
 deploymentTarget = "gce"
 ignorePorts = false
+build = ["sh", "-c", "npm install express body-parser fca-unofficial"]
 
 [[ports]]
 localPort = 3000

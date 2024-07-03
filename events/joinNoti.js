@@ -4,42 +4,51 @@ module.exports = {
   description: "Join notifications",
   author: "Rui",
   async onEvent({ api, event, prefix }) {
-    if (
-      event.logMessageType === "log:subscribe" &&
-      event.logMessageData.addedParticipants?.some(
-        (i) => i.userFbId == api.getCurrentUserID(),
-      )
-    ) {
-      api.changeNickname(
-        `[ ${prefix} ]: NashBoT`,
-        event.threadID,
-        api.getCurrentUserID(),
-      );
+    try {
+      const { logMessageType, logMessageData, threadID, author } = event;
 
-      const threadInfo = await api.getThreadInfo(event.threadID);
+      if (logMessageType === "log:subscribe") {
+        if (logMessageData.addedParticipants?.some(
+            (i) => i.userFbId === api.getCurrentUserID()
+          )) {
+          api.changeNickname(
+            `[ ${prefix} ]: NashBoT`,
+            threadID,
+            api.getCurrentUserID()
+          );
 
-      api.sendMessage(
-        `› ${botName} connected successfully!\n\nUse ${botPrefix}help to see available commands!`,
-        event.threadID,
-      );
-    } else if (
-      event.logMessageType === "log:subscribe" &&
-      event.logMessageData.addedParticipants?.some(
-        (i) => i.userFbId !== api.getCurrentUserID(),
-      )
-    ) {
-      const { addedParticipants } = event.logMessageData;
-      const { threadID, author } = event;
+          const welcomeMessage = `
+            📌 𝗝𝗼𝗶𝗻 𝗡𝗼𝘁𝗶𝗳𝗶𝗰𝗮𝘁𝗶𝗼𝗻 📌
+            ────────────────────
+            › ${prefix} connected successfully!
+            › Use ${prefix}help to see available commands!
+            ────────────────────
+          `;
 
-      const authorIno = await api.getUserInfo(author);
-      const authorInfo = authorIno[author];
+          api.sendMessage(welcomeMessage, threadID);
+        } else {
+          const { addedParticipants } = logMessageData;
+          
+          const authorInfo = await api.getUserInfo(author);
+          const authorName = authorInfo[author]?.name || 'Unknown';
 
-      const threadInfo = await api.getThreadInfo(threadID);
-      const msg = `› Welcome ${addedParticipants.map((i) => i.fullName).join(", ")} to ${threadInfo.name}!
+          
+          const threadInfo = await api.getThreadInfo(threadID);
+          const participantsList = addedParticipants.map((i) => i.fullName).join(", ");
+          const welcomeMessage = `
+            🎉 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 𝗡𝗼𝘁𝗶𝗳𝗶𝗰𝗮𝘁𝗶𝗼𝗻 🎉
+            ───────────────────────────
+            › Welcome ${participantsList} to ${threadInfo.name}!
+            › Added by: ${authorName} (${author})
+            ───────────────────────────
+          `;
 
-Added by: ${authorInfo.name} (${author})`;
-
-      api.sendMessage(msg, event.threadID);
+          api.sendMessage(welcomeMessage, threadID);
+        }
+      }
+    } catch (error) {
+      console.error('Error in joinNoti event:', error);
+      api.sendMessage('An error occurred while processing the join notification.', event.threadID);
     }
   },
 };

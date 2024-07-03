@@ -9,14 +9,14 @@ module.exports = {
     execute: async (api, event, args) => {
         const { threadID, messageID } = event;
 
-        const apiUrl = "https://nash-api-end-5swp.onrender.com/joke";
+        const apiUrl = "https://nash-rest-api.replit.app/joke";
 
         try {
             const response = await axios.get(apiUrl);
             const joke = response.data.joke;
 
             if (!joke) {
-                return api.sendMessage("No joke received from API.", threadID, messageID);
+                return api.sendMessage("ayaw lagie mo response bay no", threadID, messageID);
             }
 
             api.sendMessage(joke, threadID, messageID);

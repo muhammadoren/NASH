@@ -14,7 +14,7 @@ module.exports = {
 ➥ *${prefix}gpt4o <question>* -> Get an answer from GPT-4.
 
 *Example:*
-➥ ${prefix}ask What is the capital of France?
+➥ ${prefix}gpt4o What is the capital of France?
 
 Have fun using it, enjoy! ❤️
 Bot Developer: joshua Apostol
