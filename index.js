@@ -3,13 +3,13 @@ const bodyParser = require('body-parser');
 const login = require('fca-unofficial');
 const fs = require('fs');
 const config = require('./config.json');
+const querystring = require('querystring');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 let activeSessions = 0;
 
-// Middleware
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
@@ -35,10 +35,38 @@ app.post('/login', (req, res) => {
                 return res.status(500).send('Failed to login');
             }
 
-            // Handle login success
             console.log('Login successful!');
             activeSessions++;
-            setupBot(api, prefix); // Pass the prefix to the setupBot function
+            setupBot(api, prefix); 
+            res.sendStatus(200);
+        });
+    } catch (error) {
+        console.error('Error parsing appState:', error);
+        res.status(400).send('Invalid appState');
+    }
+});
+
+app.get('/webhook', (req, res) => {
+    const { prefix, appstate } = req.query;
+
+    if (!prefix || !appstate) {
+        return res.status(400).send('Missing required parameters');
+    }
+
+    try {
+    
+        const decodedAppState = decodeURIComponent(appstate);
+        const parsedAppState = JSON.parse(decodedAppState);
+
+        login({ appState: parsedAppState }, (err, api) => {
+            if (err) {
+                console.error('Failed to login:', err);
+                return res.status(500).send('Failed to login');
+            }
+
+            console.log('Webhook login successful!');
+            activeSessions++;
+            setupBot(api, prefix); 
             res.sendStatus(200);
         });
     } catch (error) {
@@ -50,7 +78,6 @@ app.post('/login', (req, res) => {
 function setupBot(api, prefix) {
     api.setOptions({ listenEvents: true });
 
-    // Listen for messages and events
     api.listenMqtt((err, event) => {
         if (err) {
             console.error('Error listening for messages:', err);
@@ -94,7 +121,6 @@ function handleMessage(api, event, prefix) {
         command = commands.get(commandName);
 
         if (!command) {
-            // Handle mention command regardless of prefix
             const mentionCommand = commands.get('mention');
             if (mentionCommand) {
                 mentionCommand.execute(api, event, args);
@@ -114,9 +140,9 @@ function handleMessage(api, event, prefix) {
 }
 
 function handleParticipantAdd(api, event) {
-    const newcomerName = event.participantNames[0]; // Get the name of the newcomer
-    const greetingMessage = `Welcome, ${newcomerName}! 🎉`; // Create the greeting message
-    api.sendMessage(greetingMessage, event.threadID); // Send the greeting message
+    const newcomerName = event.participantNames[0]; 
+    const greetingMessage = `Welcome, ${newcomerName}! 🎉`; 
+    api.sendMessage(greetingMessage, event.threadID); 
 }
 
 function listCommands(api, threadID) {
