@@ -1,8 +1,7 @@
-
 const axios = require('axios');
 
 module.exports = {
-    name: 'Ara',
+    name: 'ara',
     description: 'Talk to SimSimi',
     aliases: [], // Add any aliases if needed
     cooldown: 2,
