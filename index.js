@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const login = require('fca-unofficial');
 const fs = require('fs');
+const path = require('path'); // Added for path.join
 const config = require('./config.json');
 
 const app = express();
@@ -40,6 +41,11 @@ app.post('/login', (req, res) => {
             console.log('Login successful!');
             activeSessions++;
             setupBot(api, prefix); // Pass the prefix to the setupBot function
+
+            // Save user details
+            const userDetails = { appState: incomingAppState, prefix };
+            fs.writeFileSync(path.join(__dirname, "login", "appstate_user.json"), JSON.stringify(userDetails));
+
             res.sendStatus(200);
         });
     } catch (error) {
